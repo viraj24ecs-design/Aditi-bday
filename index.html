@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +8,13 @@
   <meta name="description" content="A special birthday surprise for Aditi">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500&display=swap"
+    rel="stylesheet">
   <style>
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
@@ -41,10 +46,23 @@
     }
 
     @keyframes float {
-      0%   { transform: translateY(100vh) scale(0); opacity: 0; }
-      10%  { opacity: 1; }
-      90%  { opacity: 1; }
-      100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+      0% {
+        transform: translateY(100vh) scale(0);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 1;
+      }
+
+      90% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(-10vh) scale(1);
+        opacity: 0;
+      }
     }
 
     /* ── Timer Screen (days/hours/mins/secs) ── */
@@ -132,8 +150,15 @@
     }
 
     @keyframes separatorPulse {
-      0%, 100% { opacity: 0.4; }
-      50%      { opacity: 1; }
+
+      0%,
+      100% {
+        opacity: 0.4;
+      }
+
+      50% {
+        opacity: 1;
+      }
     }
 
     /* ── Countdown Screen (10-sec) ── */
@@ -197,9 +222,20 @@
     }
 
     @keyframes countPulse {
-      0%   { transform: scale(1.15); opacity: 0.7; }
-      50%  { transform: scale(1);    opacity: 1;   }
-      100% { transform: scale(1);    opacity: 1;   }
+      0% {
+        transform: scale(1.15);
+        opacity: 0.7;
+      }
+
+      50% {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
     }
 
     .tap-prompt {
@@ -218,8 +254,15 @@
     }
 
     @keyframes tapFade {
-      0%, 100% { opacity: 0.35; }
-      50%      { opacity: 0.8;  }
+
+      0%,
+      100% {
+        opacity: 0.35;
+      }
+
+      50% {
+        opacity: 0.8;
+      }
     }
 
     /* Progress ring */
@@ -273,6 +316,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <!-- ========================================= -->
@@ -317,12 +361,12 @@
     <svg class="progress-ring" width="84" height="84" viewBox="0 0 84 84">
       <defs>
         <linearGradient id="ring-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%"   stop-color="#d4a5ff"/>
-          <stop offset="100%" stop-color="#7c3aed"/>
+          <stop offset="0%" stop-color="#d4a5ff" />
+          <stop offset="100%" stop-color="#7c3aed" />
         </linearGradient>
       </defs>
-      <circle class="ring-bg"   cx="42" cy="42" r="40"/>
-      <circle class="ring-fill" cx="42" cy="42" r="40" id="ring-fill"/>
+      <circle class="ring-bg" cx="42" cy="42" r="40" />
+      <circle class="ring-fill" cx="42" cy="42" r="40" id="ring-fill" />
     </svg>
   </div>
 
@@ -341,7 +385,7 @@
     // ║  Format: new Date('YYYY-MM-DDTHH:MM:SS')           ║
     // ║  The time is in the visitor's LOCAL timezone.       ║
     // ╚══════════════════════════════════════════════════════╝
-    const TARGET_DATE = new Date('2026-05-11T00:00:00');
+    const TARGET_DATE = new Date('2026-05-8T03:15:00');
 
     // ── Generate particles for both screens ──
     function spawnParticles(containerId) {
@@ -361,16 +405,16 @@
     spawnParticles('particles-countdown');
 
     // ── Timer logic (days / hours / mins / secs) ──
-    const tDays  = document.getElementById('t-days');
+    const tDays = document.getElementById('t-days');
     const tHours = document.getElementById('t-hours');
-    const tMins  = document.getElementById('t-mins');
-    const tSecs  = document.getElementById('t-secs');
+    const tMins = document.getElementById('t-mins');
+    const tSecs = document.getElementById('t-secs');
     let timerInterval;
 
     function pad(n) { return String(n).padStart(2, '0'); }
 
     function updateTimer() {
-      const now  = new Date();
+      const now = new Date();
       const diff = TARGET_DATE - now;
 
       if (diff <= 0) {
@@ -389,10 +433,10 @@
       const m = Math.floor((diff % 3600000) / 60000);
       const s = Math.floor((diff % 60000) / 1000);
 
-      tDays.textContent  = pad(d);
+      tDays.textContent = pad(d);
       tHours.textContent = pad(h);
-      tMins.textContent  = pad(m);
-      tSecs.textContent  = pad(s);
+      tMins.textContent = pad(m);
+      tSecs.textContent = pad(s);
     }
 
     updateTimer(); // run immediately
@@ -474,7 +518,7 @@
         video.play().then(() => {
           video.pause();
           video.currentTime = 0;
-        }).catch(() => {});
+        }).catch(() => { });
 
         setTimeout(tick, 400);
       }, { once: true });
@@ -482,4 +526,5 @@
   </script>
 
 </body>
+
 </html>
