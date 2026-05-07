@@ -207,7 +207,7 @@
 
   <!-- Video -->
   <div id="video-screen">
-    <video id="birthday-video" playsinline preload="auto">
+    <video id="birthday-video" playsinline webkit-playsinline muted preload="auto">
       <source src="video.mp4" type="video/mp4">
     </video>
   </div>
@@ -264,15 +264,30 @@
       setTimeout(() => {
         cs.style.display = 'none';
         vs.classList.add('visible');
-        video.play();
+        // Unmute and play
+        video.muted = false;
+        video.play().catch(() => {
+          // If unmuted play fails, play muted as fallback
+          video.muted = true;
+          video.play();
+        });
       }, 800);
     }
 
     // Wait for user tap to start (needed for browser autoplay policy)
     const cs = document.getElementById('countdown-screen');
+    const video = document.getElementById('birthday-video');
     cs.addEventListener('click', function startHandler() {
       cs.removeEventListener('click', startHandler);
       cs.classList.add('running');
+
+      // Prime the video on user gesture so mobile browsers allow playback
+      video.load();
+      video.play().then(() => {
+        video.pause();
+        video.currentTime = 0;
+      }).catch(() => {});
+
       setTimeout(tick, 400);
     }, { once: true });
   </script>
