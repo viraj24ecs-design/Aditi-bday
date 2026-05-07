@@ -23,23 +23,149 @@
       font-family: 'Inter', sans-serif;
     }
 
-    /* ── Countdown Screen ── */
-    #countdown-screen {
+    /* ── Shared particles ── */
+    .particles {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: rgba(168, 85, 247, 0.6);
+      animation: float linear infinite;
+    }
+
+    @keyframes float {
+      0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 1; }
+      100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+    }
+
+    /* ── Timer Screen (days/hours/mins/secs) ── */
+    #timer-screen {
       position: fixed;
       inset: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      z-index: 20;
+      background: radial-gradient(ellipse at 50% 40%, #1a0a2e 0%, #0a0a0a 70%);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    #timer-screen.fade-out {
+      opacity: 0;
+      transform: scale(1.1);
+      pointer-events: none;
+    }
+
+    .timer-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      background: linear-gradient(135deg, #f5e6ff 0%, #d4a5ff 50%, #a855f7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+      text-align: center;
+      padding: 0 1rem;
+    }
+
+    .timer-subtitle {
+      font-weight: 300;
+      font-size: clamp(0.75rem, 1.5vw, 0.95rem);
+      color: rgba(255, 255, 255, 0.35);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 3rem;
+    }
+
+    .timer-grid {
+      display: flex;
+      gap: clamp(0.8rem, 3vw, 2rem);
+      align-items: center;
+    }
+
+    .timer-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: clamp(3.5rem, 12vw, 6rem);
+    }
+
+    .timer-value {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(2.2rem, 8vw, 4.5rem);
+      line-height: 1;
+      background: linear-gradient(135deg, #f5e6ff 0%, #d4a5ff 30%, #a855f7 60%, #7c3aed 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 25px rgba(168, 85, 247, 0.3));
+    }
+
+    .timer-label {
+      font-weight: 300;
+      font-size: clamp(0.55rem, 1.2vw, 0.75rem);
+      color: rgba(255, 255, 255, 0.4);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-top: 0.5rem;
+    }
+
+    .timer-separator {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: clamp(1.5rem, 5vw, 3rem);
+      color: rgba(168, 85, 247, 0.4);
+      margin-bottom: 1.2rem;
+      animation: separatorPulse 1s ease-in-out infinite;
+    }
+
+    @keyframes separatorPulse {
+      0%, 100% { opacity: 0.4; }
+      50%      { opacity: 1; }
+    }
+
+    /* ── Countdown Screen (10-sec) ── */
+    #countdown-screen {
+      position: fixed;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       z-index: 10;
       background: radial-gradient(ellipse at 50% 40%, #1a0a2e 0%, #0a0a0a 70%);
       transition: opacity 0.8s ease, transform 0.8s ease;
+      cursor: pointer;
+    }
+
+    #countdown-screen.visible {
+      display: flex;
     }
 
     #countdown-screen.fade-out {
       opacity: 0;
       transform: scale(1.1);
       pointer-events: none;
+    }
+
+    #countdown-screen.running {
+      cursor: default;
+    }
+
+    #countdown-screen.running .tap-prompt {
+      display: none;
     }
 
     .countdown-label {
@@ -76,28 +202,24 @@
       100% { transform: scale(1);    opacity: 1;   }
     }
 
-    /* Floating particles */
-    .particles {
+    .tap-prompt {
       position: absolute;
-      inset: 0;
-      overflow: hidden;
-      pointer-events: none;
+      bottom: 6rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-weight: 300;
+      font-size: clamp(0.8rem, 1.5vw, 1rem);
+      color: rgba(255, 255, 255, 0.35);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      animation: tapFade 2s ease-in-out infinite;
+      cursor: pointer;
+      white-space: nowrap;
     }
 
-    .particle {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: rgba(168, 85, 247, 0.6);
-      animation: float linear infinite;
-    }
-
-    @keyframes float {
-      0%   { transform: translateY(100vh) scale(0); opacity: 0; }
-      10%  { opacity: 1; }
-      90%  { opacity: 1; }
-      100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+    @keyframes tapFade {
+      0%, 100% { opacity: 0.35; }
+      50%      { opacity: 0.8;  }
     }
 
     /* Progress ring */
@@ -127,39 +249,6 @@
       transform-origin: center;
     }
 
-    /* ── Tap to start ── */
-    .tap-prompt {
-      position: absolute;
-      bottom: 6rem;
-      left: 50%;
-      transform: translateX(-50%);
-      font-family: 'Inter', sans-serif;
-      font-weight: 300;
-      font-size: clamp(0.8rem, 1.5vw, 1rem);
-      color: rgba(255, 255, 255, 0.35);
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      animation: tapFade 2s ease-in-out infinite;
-      cursor: pointer;
-    }
-
-    @keyframes tapFade {
-      0%, 100% { opacity: 0.35; }
-      50%      { opacity: 0.8;  }
-    }
-
-    #countdown-screen {
-      cursor: pointer;
-    }
-
-    #countdown-screen.running {
-      cursor: default;
-    }
-
-    #countdown-screen.running .tap-prompt {
-      display: none;
-    }
-
     /* ── Video Screen ── */
     #video-screen {
       position: fixed;
@@ -186,9 +275,41 @@
 </head>
 <body>
 
-  <!-- Countdown -->
+  <!-- ========================================= -->
+  <!-- TIMER: days / hours / minutes / seconds   -->
+  <!-- ========================================= -->
+  <div id="timer-screen">
+    <div class="particles" id="particles-timer"></div>
+    <h1 class="timer-title">Something Special is Coming ✨</h1>
+    <p class="timer-subtitle">countdown begins in</p>
+    <div class="timer-grid">
+      <div class="timer-unit">
+        <span class="timer-value" id="t-days">00</span>
+        <span class="timer-label">Days</span>
+      </div>
+      <span class="timer-separator">:</span>
+      <div class="timer-unit">
+        <span class="timer-value" id="t-hours">00</span>
+        <span class="timer-label">Hours</span>
+      </div>
+      <span class="timer-separator">:</span>
+      <div class="timer-unit">
+        <span class="timer-value" id="t-mins">00</span>
+        <span class="timer-label">Minutes</span>
+      </div>
+      <span class="timer-separator">:</span>
+      <div class="timer-unit">
+        <span class="timer-value" id="t-secs">00</span>
+        <span class="timer-label">Seconds</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================= -->
+  <!-- 10-SECOND COUNTDOWN                      -->
+  <!-- ========================================= -->
   <div id="countdown-screen">
-    <div class="particles" id="particles"></div>
+    <div class="particles" id="particles-countdown"></div>
     <p class="countdown-label">get ready</p>
     <div class="countdown-number" id="count">10</div>
     <p class="tap-prompt">tap anywhere to start</p>
@@ -205,7 +326,9 @@
     </svg>
   </div>
 
-  <!-- Video -->
+  <!-- ========================================= -->
+  <!-- VIDEO                                     -->
+  <!-- ========================================= -->
   <div id="video-screen">
     <video id="birthday-video" playsinline webkit-playsinline muted preload="auto">
       <source src="video.mp4" type="video/mp4">
@@ -213,20 +336,83 @@
   </div>
 
   <script>
-    // Generate particles
-    const particlesEl = document.getElementById('particles');
-    for (let i = 0; i < 40; i++) {
-      const p = document.createElement('div');
-      p.className = 'particle';
-      p.style.left = Math.random() * 100 + '%';
-      p.style.animationDuration = (4 + Math.random() * 6) + 's';
-      p.style.animationDelay = (Math.random() * 8) + 's';
-      p.style.width = p.style.height = (2 + Math.random() * 4) + 'px';
-      p.style.background = `hsla(${260 + Math.random() * 40}, 70%, ${60 + Math.random() * 30}%, ${0.3 + Math.random() * 0.5})`;
-      particlesEl.appendChild(p);
+    // ╔══════════════════════════════════════════════════════╗
+    // ║  🎯 TARGET DATE — EDIT THIS LINE TO CHANGE DATE    ║
+    // ║  Format: new Date('YYYY-MM-DDTHH:MM:SS')           ║
+    // ║  The time is in the visitor's LOCAL timezone.       ║
+    // ╚══════════════════════════════════════════════════════╝
+    const TARGET_DATE = new Date('2026-05-11T00:00:00');
+
+    // ── Generate particles for both screens ──
+    function spawnParticles(containerId) {
+      const el = document.getElementById(containerId);
+      for (let i = 0; i < 40; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.animationDuration = (4 + Math.random() * 6) + 's';
+        p.style.animationDelay = (Math.random() * 8) + 's';
+        p.style.width = p.style.height = (2 + Math.random() * 4) + 'px';
+        p.style.background = `hsla(${260 + Math.random() * 40}, 70%, ${60 + Math.random() * 30}%, ${0.3 + Math.random() * 0.5})`;
+        el.appendChild(p);
+      }
+    }
+    spawnParticles('particles-timer');
+    spawnParticles('particles-countdown');
+
+    // ── Timer logic (days / hours / mins / secs) ──
+    const tDays  = document.getElementById('t-days');
+    const tHours = document.getElementById('t-hours');
+    const tMins  = document.getElementById('t-mins');
+    const tSecs  = document.getElementById('t-secs');
+    let timerInterval;
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    function updateTimer() {
+      const now  = new Date();
+      const diff = TARGET_DATE - now;
+
+      if (diff <= 0) {
+        // Timer done — transition to countdown screen
+        clearInterval(timerInterval);
+        tDays.textContent = '00';
+        tHours.textContent = '00';
+        tMins.textContent = '00';
+        tSecs.textContent = '00';
+        transitionToCountdown();
+        return;
+      }
+
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff % 86400000) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+
+      tDays.textContent  = pad(d);
+      tHours.textContent = pad(h);
+      tMins.textContent  = pad(m);
+      tSecs.textContent  = pad(s);
     }
 
-    // Countdown logic
+    updateTimer(); // run immediately
+    timerInterval = setInterval(updateTimer, 1000);
+
+    // ── Transition: timer → countdown ──
+    function transitionToCountdown() {
+      const timerScreen = document.getElementById('timer-screen');
+      const countdownScreen = document.getElementById('countdown-screen');
+
+      timerScreen.classList.add('fade-out');
+
+      setTimeout(() => {
+        timerScreen.style.display = 'none';
+        countdownScreen.classList.add('visible');
+        setupCountdownTap();
+      }, 800);
+    }
+
+    // ── 10-second countdown logic ──
     const TOTAL = 10;
     const countEl = document.getElementById('count');
     const ringFill = document.getElementById('ring-fill');
@@ -274,22 +460,25 @@
       }, 800);
     }
 
-    // Wait for user tap to start (needed for browser autoplay policy)
-    const cs = document.getElementById('countdown-screen');
-    const video = document.getElementById('birthday-video');
-    cs.addEventListener('click', function startHandler() {
-      cs.removeEventListener('click', startHandler);
-      cs.classList.add('running');
+    // ── Tap to start (only enabled after timer finishes) ──
+    function setupCountdownTap() {
+      const cs = document.getElementById('countdown-screen');
+      const video = document.getElementById('birthday-video');
 
-      // Prime the video on user gesture so mobile browsers allow playback
-      video.load();
-      video.play().then(() => {
-        video.pause();
-        video.currentTime = 0;
-      }).catch(() => {});
+      cs.addEventListener('click', function startHandler() {
+        cs.removeEventListener('click', startHandler);
+        cs.classList.add('running');
 
-      setTimeout(tick, 400);
-    }, { once: true });
+        // Prime the video on user gesture so mobile browsers allow playback
+        video.load();
+        video.play().then(() => {
+          video.pause();
+          video.currentTime = 0;
+        }).catch(() => {});
+
+        setTimeout(tick, 400);
+      }, { once: true });
+    }
   </script>
 
 </body>
